@@ -24,7 +24,6 @@ from setuptools import find_namespace_packages
 from setuptools import setup
 from setuptools.command.build import build
 
-
 def _get_version():
   with open('vizier/__init__.py') as fp:
     for line in fp:
@@ -34,15 +33,19 @@ def _get_version():
         return g['__version__']
     raise ValueError('`__version__` not defined in `vizier/__init__.py`')
 
-
 def _strip_comments_from_line(s: str) -> str:
   """Parses a line of a requirements.txt file."""
   requirement, *_ = s.split('#')
   return requirement.strip()
 
-
 def _parse_requirements(requirements_txt_path: str) -> list[str]:
-  """Returns a list of dependencies for setup() from requirements.txt."""
+  """Returns a list of dependencies for setup(project_urls={
+    'Homepage': 'https://github.com/lineaje-labs-gos/google-vizier',
+    'Repository': 'https://github.com/lineaje-labs-gos/google-vizier',
+    'Tracker': 'https://github.com/lineaje-labs-gos/google-vizier/issues',
+  }, 
+  maintainer_email="221268890+Lineaje-DepFixer@users.noreply.github.com", 
+  maintainer="Lineaje DepFixer", ) from requirements.txt."""
 
   # Currently a requirements.txt is being used to specify dependencies. In order
   # to avoid specifying it in two places, we're going to use that file as the
@@ -52,7 +55,6 @@ def _parse_requirements(requirements_txt_path: str) -> list[str]:
     lines = [_strip_comments_from_line(line) for line in fp.read().splitlines()]
     # Remove empty lines and direct github repos (not allowed in PyPI setups)
     return [l for l in lines if (l and 'github.com' not in l)]
-
 
 class BuildCmd(build):
   """Custom installation script to build the protos."""
@@ -67,7 +69,6 @@ class BuildCmd(build):
     if os.system('bash build_protos.sh'):
       raise OSError('Failed to run build_protos.sh')
     build.run(self)
-
 
 _VERSION = _get_version()
 _NAME = 'google-vizier'
@@ -89,10 +90,16 @@ extras_require['all'] = list(
     itertools.chain.from_iterable(extras_require.values())
 )
 
-setup(
+setup(project_urls={
+    'Homepage': 'https://github.com/lineaje-labs-gos/google-vizier',
+    'Repository': 'https://github.com/lineaje-labs-gos/google-vizier',
+    'Tracker': 'https://github.com/lineaje-labs-gos/google-vizier/issues',
+  }, 
+  maintainer_email="221268890+Lineaje-DepFixer@users.noreply.github.com", 
+  maintainer="Lineaje DepFixer", 
     name=_NAME,
     version=_VERSION,
-    url='https://github.com/google/vizier',
+    url="https://github.com/lineaje-labs-gos/google-vizier",
     license='Apache License 2.0',
     author='Vizier Team',
     description=(
